@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_beacon/flutter_beacon.dart';
@@ -13,10 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(),
+      home: SafeArea(child: MyHomePage()),
     );
   }
 }
@@ -40,14 +35,19 @@ class _MyHomePageState extends State<MyHomePage> {
     regions.add(Region(identifier: 'Hai', proximityUUID: 'FDA50693-A4E2-4FB1-AFCF-C6EB07647806'));
 
     flutterBeacon.monitoring(regions).listen((MonitoringResult result) {
-      print("Found beacon ${result.region.identifier}");
+      print("Monitored beacon ${result.region.identifier}");
     });
+
+    flutterBeacon.ranging(regions).listen((event) {
+      print("Ranged beacon ${event.region.identifier}");
+    });
+    
   }
 
   @override
   Widget build(BuildContext context) {
     setup();
     
-    return Text("Press me to setup");
+    return Text("Started ranging");
   }
 }
